@@ -9,11 +9,13 @@ var ehandler  = function mouseSelectionEventHandler(e)
 	if(e.ctrlKey) //if crtl is pressed
 	{
 		//get all headers for part table
-		//alert(e.target.nodeName);
+		
 		var partHeaders=[];
-		$(e.target).closest('div#pnlMain').find('tr.AP_FreeSize_ColumnHeader').find('th').each(function(){
+		//$(e.target).closest('div#pnlMain').find('tr.AP_FreeSize_ColumnHeader').find('th').each(function(){
+		$(e.target).closest('div#pnlMain').find('th').each(function(){
 			partHeaders.push($(this).text());
 		});
+		//alert(e.target.nodeName + " : " + $(e.target).closest('div#pnlMain').find('tr.AP_FreeSize_ColumnHeader').length + ":"+ partHeaders);
 
 		var partData={};
 		if(partHeaders.length > 0){

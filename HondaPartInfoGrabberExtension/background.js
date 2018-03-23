@@ -1,23 +1,35 @@
 
 var history_log = [];
+var unreadDataCount = 0;
 var testwindow=null;
 
 chrome.browserAction.onClicked.addListener(function() {
   testwindow = window.open('partsList.html', 'testwindow', 'width=700,height=600');
 });
 
+function setBadgeText(){  
+  if(unreadDataCount==0)
+    chrome.browserAction.setBadgeText({text: ''});
+  else
+    chrome.browserAction.setBadgeText({text: unreadDataCount.toString()});
+}
+
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.sender=="tab"){
 
       if(request.msg == "data_captured"){
+        
+        unreadDataCount ++;
+        setBadgeText();
+
         //store the captured incoming part data
         history_log.push(request.data);        
 
         //notify the UI to grab it.
         testwindow && testwindow.postMessage({msg : "load_captured_data", sender : "background", data: request.data },"*");
 
-        alert("Data from Tab " + JSON.stringify(history_log));
+        //alert("Data from Tab " + JSON.stringify(history_log));
       }
     }
     else if(request.sender=="ui"){
@@ -25,12 +37,17 @@ chrome.runtime.onMessage.addListener(
          testwindow && testwindow.postMessage({msg : "load_all_data", sender : "background", data: history_log },"*");
          //testwindow && testwindow.postMessage({msg : "load_all_data"},"*");
          //alert("forward it to window" + testwindow);
+         sendResponse();
       }
       else if(request.msg == "clear_all_data"){
          history_log = {};
+         unreadDataCount=0;
+         setBadgeText();
       }
-
-      //alert(request.msg);
+      else if(request.msg == "read_data"){
+         unreadDataCount=0;
+         setBadgeText();
+      }
     }
   }
 );

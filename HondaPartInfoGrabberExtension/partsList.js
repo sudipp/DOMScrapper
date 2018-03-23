@@ -72,13 +72,27 @@ function give_all_data (){
 	chrome.runtime.sendMessage({
 			sender : "ui", 
 			msg: "give_all_data"
+		},function(){
+			notify_read_data();
 		});
+	/*chrome.runtime.sendMessage({
+			sender : "ui", 
+			msg: "read_data"
+		});*/
 };
 function clear_all_data (){
 	chrome.runtime.sendMessage({
 			sender : "ui", 
 			msg: "clear_all_data"
-		});
+		}, function(){
+
+		});	
+};
+function notify_read_data (){
+	chrome.runtime.sendMessage({
+			sender : "ui", 
+			msg: "read_data"
+		});	
 };
 
 //window.addEventListener("message", receiveMessage, false);
@@ -93,6 +107,7 @@ function receiveMessage(evt)
 		}
 		else if(evt.data.msg == "load_captured_data"){
 			//alert("sender: " + evt.data.sender + " data: " + evt.data.data);	
+			notify_read_data();
 			buildTable(evt.data.data, false);
 		}
 	}
