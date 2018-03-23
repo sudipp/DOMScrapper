@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Honda Parts Capture",
+  "version": "0.1",
+  "background": {
+    "scripts": [ "jquery-1.9.1.min.js", "background.js" ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*", "https://*/*", "file://*/*"
+      ],
+      "js": ["jquery-1.9.1.min.js", "content.js"]
+    }
+  ],
+  "browser_action": {
+    "default_icon": "sample-16.png",
+    "default_title": "Honda Parts Capture"
+  },
+  "permissions":[ "tabs", "\u003Call_urls\u003E", "unlimitedStorage", "management" ]
+}
