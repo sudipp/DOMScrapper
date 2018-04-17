@@ -14,6 +14,24 @@ function setBadgeText(){
     chrome.browserAction.setBadgeText({text: unreadDataCount.toString()});
 }
 
+function sendToPartsServer(data){
+    $.ajax({
+        type: "POST", //or GET
+        url: "http://localhost:1337/api/parts",
+        data: data,
+        crossDomain:true,
+        cache:false,
+        async:false,
+        success: function(msg){
+            debugger;
+        },
+        error: function(jxhr){
+            //alert(jxhr.responseText);
+            console.error('Chrome extension - Error sending data to PartsServer. ' + jxhr.responseText ); 
+        }
+    });
+}
+
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     if(request.sender=="tab"){
@@ -28,7 +46,9 @@ chrome.runtime.onMessage.addListener(
 
         //notify the UI to grab it.
         testwindow && testwindow.postMessage({msg : "load_captured_data", sender : "background", data: request.data },"*");
-
+        
+        sendToPartsServer(request.data);
+          
         //alert("Data from Tab " + JSON.stringify(history_log));
       }
     }

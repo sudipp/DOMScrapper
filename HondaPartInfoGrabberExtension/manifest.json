@@ -18,5 +18,5 @@
     "default_icon": "hondaicon.png",
     "default_title": "Honda Parts Capture"
   },
-  "permissions":[ "tabs", "\u003Call_urls\u003E", "unlimitedStorage", "management" ]
+  "permissions":[ "tabs", "\u003Call_urls\u003E", "unlimitedStorage", "management", "http://*/", "https://*/" ]
 }
